@@ -1,13 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Pixel Stego Encoder</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
-    <script src="sketch.js" defer></script>
-  </head>
-  <body>
-    <h1>Pixel Stego Encoder</h1>
-    <p>Basic p5.js canvas is below.</p>
-  </body>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Pixel Stego Encoder</title>
+</head>
+<body>
+  <h1>Pixel Stego Encoder</h1>
+
+  <input type="file" id="imageInput" accept="image/*" />
+  <br /><br />
+
+  <canvas id="canvas" style="display:none;"></canvas>
+  <img id="outputImage" />
+
+  <script src="script.js"></script>
+</body>
 </html>
