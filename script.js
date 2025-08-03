@@ -1,37 +1,51 @@
-document.getElementById('imageInput').addEventListener('change', function (event) {
-    const file = event.target.files[0];
+function encodeFill(originalCtx, editedCtx, hiddenCtx, width, height) {
+    const originalData = originalCtx.getImageData(0, 0, width, height);
+    const editedData = editedCtx.getImageData(0, 0, width, height);
+    const hiddenData = hiddenCtx.createImageData(width, height);
+  
+    for (let i = 0; i < originalData.data.length; i += 4) {
+      let r = originalData.data[i];
+      let g = originalData.data[i + 1];
+      let b = originalData.data[i + 2];
+      let a = originalData.data[i + 3];
+  
+      // Do encoding logic here (copying in this base example)
+      hiddenData.data[i] = r;
+      hiddenData.data[i + 1] = g;
+      hiddenData.data[i + 2] = b;
+      hiddenData.data[i + 3] = a;
+    }
+  
+    hiddenCtx.putImageData(hiddenData, 0, 0);
+  }
+  
+  document.getElementById("imageInput").addEventListener("change", function (e) {
+    const file = e.target.files[0];
     if (!file) return;
   
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      const img = new Image();
-      img.onload = function () {
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
+    const img = new Image();
+    const url = URL.createObjectURL(file);
   
-        // Set canvas to image size
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0);
+    img.onload = function () {
+      const width = img.width;
+      const height = img.height;
   
-        // Get pixel data
-        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        const data = imageData.data;
+      const originalCanvas = document.getElementById("originalCanvas");
+      const encodedCanvas = document.getElementById("encodedCanvas");
   
-        // 🔐 ENCODE HERE
-        for (let i = 0; i < data.length; i += 4) {
-          // Example: just tweak the red channel slightly as a placeholder
-          data[i] = data[i] & 0xFE; // clear LSB of red
-        }
+      originalCanvas.width = encodedCanvas.width = width;
+      originalCanvas.height = encodedCanvas.height = height;
   
-        // Put encoded data back
-        ctx.putImageData(imageData, 0, 0);
+      const originalCtx = originalCanvas.getContext("2d");
+      const encodedCtx = encodedCanvas.getContext("2d");
   
-        // Display result
-        const outputImg = document.getElementById('outputImage');
-        outputImg.src = canvas.toDataURL();
-      };
-      img.src = e.target.result;
+      // Draw original image to both canvases
+      originalCtx.drawImage(img, 0, 0);
+      encodedCtx.drawImage(img, 0, 0);
+  
+      // Encode result onto encoded canvas
+      encodeFill(originalCtx, encodedCtx, encodedCtx, width, height);
     };
-    reader.readAsDataURL(file);
+  
+    img.src = url;
   });

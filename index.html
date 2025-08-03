@@ -1,17 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Pixel Stego Encoder</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <h1>Pixel Stego Encoder</h1>
 
-  <input type="file" id="imageInput" accept="image/*" />
-  <br /><br />
-
-  <canvas id="canvas" style="display:none;"></canvas>
-  <img id="outputImage" />
+  <input type="file" accept="image/*" id="imageInput" />
+  <div class="canvas-wrapper">
+    <canvas id="originalCanvas"></canvas>
+    <canvas id="encodedCanvas"></canvas>
+  </div>
 
   <script src="script.js"></script>
 </body>
